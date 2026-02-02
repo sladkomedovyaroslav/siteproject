@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 // Используем Formspree для отправки
-                const response = await fetch('https://formspree.io/f/xvojpqzl', {
+                const response = await fetch('https://formspree.io/f/mbdkpyal', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json'
