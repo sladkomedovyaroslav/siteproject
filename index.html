@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ресторан "Гастроном" | Изысканная кухня</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css" media="screen and (max-width: 768px)">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+</head>
+<body>
+    <!-- Шапка с видео -->
+    <header class="header">
+        <video autoplay muted loop playsinline class="header-video">
+            <source src="assets/video.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+        <div class="header-overlay"></div>
+        
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-container">
+                    <a href="#" class="logo">
+                        <img src="img/logo.png" alt="Гастроном">
+                    </a>
+                    
+                    <!-- Десктопное меню -->
+                    <ul class="nav-menu">
+                        <li><a href="#about">О нас</a></li>
+                        <li class="menu-dropdown">
+                            <a href="#menu">Меню ▾</a>
+                            <ul class="dropdown">
+                                <li><a href="#starters">Закуски</a></li>
+                                <li><a href="#main">Основные блюда</a></li>
+                                <li><a href="#desserts">Десерты</a></li>
+                                <li><a href="#drinks">Напитки</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#gallery">Галерея</a></li>
+                        <li><a href="#events">События</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                    
+                    <!-- Кнопка связи для десктопа -->
+                    <button class="contact-btn desktop-contact">Связь с нами</button>
+                    
+                    <!-- Мобильное меню -->
+                    <button class="mobile-menu-btn" aria-label="Открыть меню">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Мобильное меню (скрытое) -->
+        <div class="mobile-menu">
+            <ul class="mobile-nav">
+                <li><a href="#about">О нас</a></li>
+                <li class="mobile-dropdown">
+                    <a href="#menu">Меню ▾</a>
+                    <ul class="mobile-submenu">
+                        <li><a href="#starters">Закуски</a></li>
+                        <li><a href="#main">Основные блюда</a></li>
+                        <li><a href="#desserts">Десерты</a></li>
+                        <li><a href="#drinks">Напитки</a></li>
+                    </ul>
+                </li>
+                <li><a href="#gallery">Галерея</a></li>
+                <li><a href="#events">События</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+                <li><button class="contact-btn mobile-contact">Связь с нами</button></li>
+            </ul>
+        </div>
+        
+        <div class="header-content">
+            <h1 class="header-title">Изысканная кухня от шеф-повара</h1>
+            <p class="header-subtitle">Авторские блюда из свежайших продуктов</p>
+            <a href="#reservation" class="btn-reserve">Забронировать стол</a>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Секция "О нас" -->
+        <section id="about" class="section about">
+            <div class="container">
+                <h2 class="section-title">О нашем ресторане</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Мы создаем неповторимую атмосферу и предлагаем блюда, которые запомнятся вам надолго.</p>
+                        <p>Наша команда поваров с многолетним опытом работает только с лучшими продуктами от местных поставщиков.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="img/restaurant-interior.jpg" alt="Интерьер ресторана">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Специальные предложения" (Слайдер) -->
+        <section class="section specials">
+            <div class="container">
+                <h2 class="section-title">Специальные предложения</h2>
+                <div class="slider">
+                    <div class="slide">
+                        <img src="img/dishes/dish1.jpg" alt="Блюдо дня">
+                        <h3>Блюдо дня</h3>
+                        <p>Стейк из мраморной говядины</p>
+                    </div>
+                    <div class="slide">
+                        <img src="img/dishes/dish2.jpg" alt="Шеф-меню">
+                        <h3>Шеф-меню</h3>
+                        <p>Утиная грудка с ягодным соусом</p>
+                    </div>
+                    <div class="slide">
+                        <img src="img/dishes/dish3.jpg" alt="Десерт недели">
+                        <h3>Десерт недели</h3>
+                        <p>Тирамису по-итальянски</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Меню" -->
+        <section id="menu" class="section menu">
+            <div class="container">
+                <h2 class="section-title">Наше меню</h2>
+                <div class="menu-categories">
+                    <button class="menu-category active" data-category="starters">Закуски</button>
+                    <button class="menu-category" data-category="main">Основные блюда</button>
+                    <button class="menu-category" data-category="desserts">Десерты</button>
+                    <button class="menu-category" data-category="drinks">Напитки</button>
+                </div>
+                <div class="menu-items" id="menu-items">
+                    <!-- Контент меню будет загружен через JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Форма бронирования -->
+        <section id="reservation" class="section reservation">
+            <div class="container">
+                <h2 class="section-title">Забронировать стол</h2>
+                <form id="reservation-form" class="reservation-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" required placeholder="Ваше имя *">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" required placeholder="Телефон *">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="time" id="time" name="time" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="guests" name="guests" min="1" max="20" required placeholder="Количество гостей *">
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea id="message" name="message" placeholder="Дополнительные пожелания"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Отправить заявку</button>
+                    <div class="form-message" id="form-message"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Контакты</h3>
+                    <p>г. Москва, ул. Гастрономическая, 15</p>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>info@gastronom.ru</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Часы работы</h3>
+                    <p>Пн-Чт: 12:00 - 23:00</p>
+                    <p>Пт-Сб: 12:00 - 00:00</p>
+                    <p>Вс: 12:00 - 22:00</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Мы в соцсетях</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram">IG</a>
+                        <a href="#" aria-label="Facebook">FB</a>
+                        <a href="#" aria-label="Telegram">TG</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ресторан "Гастроном". Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Попап форма -->
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup">
+            <button class="popup-close" id="popup-close">&times;</button>
+            <h2>Свяжитесь с нами</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <input type="text" id="popup-name" name="name" required placeholder="Имя *">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="popup-email" name="email" required placeholder="Email *">
+                </div>
+                <div class="form-group">
+                    <textarea id="popup-message" name="message" required placeholder="Сообщение *"></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="popup-submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/form.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
