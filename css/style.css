@@ -447,7 +447,7 @@ body.no-scroll {
     transform: scale(1.05);
 }
 
-/* Секция специальных предложений - ИСПРАВЛЕНО */
+/* Секция специальных предложений */
 .specials {
     background-color: var(--light-bg);
     position: relative;
@@ -624,6 +624,300 @@ body.no-scroll {
 .indicator.active {
     background: var(--primary-color);
     transform: scale(1.3);
+}
+
+/* Секция калькулятора */
+.calculator {
+    background: linear-gradient(135deg, #f9f5f0 0%, #fff 100%);
+}
+
+.calculator-content {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.calculator-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+
+.calculator-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.category {
+    background: var(--light-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: var(--transition);
+}
+
+.category:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.category-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.calculator-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background: var(--white);
+    border-radius: 10px;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.calculator-item:hover {
+    border-color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.calculator-item label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.calculator-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.item-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.calculator-item:hover .item-name {
+    color: var(--primary-color);
+}
+
+.item-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    min-width: 80px;
+    text-align: right;
+}
+
+.calculator-summary {
+    background: linear-gradient(135deg, var(--secondary-color), #3a3a3a);
+    border-radius: 15px;
+    padding: 2rem;
+    color: var(--white);
+    position: sticky;
+    top: 100px;
+}
+
+.summary-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.order-list {
+    flex: 1;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding-right: 10px;
+}
+
+.order-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.order-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.order-list::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease;
+}
+
+.order-item-name {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.order-item-price {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-left: 1rem;
+}
+
+.empty-message {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    padding: 2rem 0;
+}
+
+.order-total {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1.5rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.total-row:last-child {
+    margin-bottom: 0;
+}
+
+.discount-row {
+    color: #4CAF50;
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
+}
+
+.final-row {
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding-top: 1rem;
+    border-top: 2px solid var(--primary-color);
+    margin-top: 1rem;
+}
+
+.total-price,
+.discount-amount,
+.final-price {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.btn-order {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1.5rem;
+    border: 2px solid var(--primary-color);
+}
+
+.btn-order:hover {
+    background: transparent;
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.btn-clear {
+    width: 100%;
+    padding: 0.8rem;
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.btn-clear:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+}
+
+.calculator-note {
+    background: rgba(193, 154, 107, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--text-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.calculator-note p {
+    margin: 0;
+}
+
+/* Анимация для добавления элементов */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.price-updated {
+    animation: pulse 0.5s ease;
 }
 
 /* Меню */
@@ -891,13 +1185,4 @@ body.no-scroll {
 /* Утилиты */
 .fade-in {
     animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
