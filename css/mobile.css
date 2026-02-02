@@ -130,6 +130,47 @@
         border-width: 2px;
     }
     
+    /* Калькулятор */
+    .calculator-form {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .calculator-categories {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .calculator-content {
+        padding: 2rem;
+    }
+    
+    .category {
+        padding: 1.2rem;
+    }
+    
+    .calculator-summary {
+        position: static;
+        margin-top: 1rem;
+    }
+    
+    .order-list {
+        max-height: 200px;
+    }
+    
+    .total-row {
+        font-size: 1rem;
+    }
+    
+    .final-row {
+        font-size: 1.2rem;
+    }
+    
+    .calculator-note {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
     /* Форма */
     .reservation-form {
         grid-template-columns: 1fr;
