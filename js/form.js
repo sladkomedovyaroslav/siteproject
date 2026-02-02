@@ -1,5 +1,8 @@
 // Форма бронирования
 document.addEventListener('DOMContentLoaded', function() {
+    // Ваш endpoint Formspree
+    const FORMSPREEE_ENDPOINT = 'https://formspree.io/f/mbdkpyal';
+    
     const reservationForm = document.getElementById('reservation-form');
     const contactForm = document.getElementById('contact-form');
     
@@ -39,9 +42,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Анимация открытия попапа
     function openPopup() {
         popupOverlay.style.display = 'flex';
-        setTimeout(() => {
-            popupOverlay.style.opacity = '1';
-        }, 10);
+        popupOverlay.style.opacity = '0';
+        
+        let opacity = 0;
+        function animate() {
+            opacity += 0.05;
+            popupOverlay.style.opacity = opacity;
+            if(opacity < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+        requestAnimationFrame(animate);
     }
     
     function closePopup() {
@@ -56,19 +67,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // Устанавливаем минимальную дату
         const dateInput = document.getElementById('date');
         if(dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.min = today;
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            // Форматируем даты для input type="date"
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+            
+            dateInput.min = formatDate(today);
+            dateInput.value = formatDate(tomorrow);
+        }
+        
+        // Устанавливаем время по умолчанию
+        const timeInput = document.getElementById('time');
+        if(timeInput) {
+            timeInput.value = '19:00';
         }
         
         reservationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Валидация
             if(!validateForm(this)) {
-                showMessage('Пожалуйста, заполните все обязательные поля правильно', 'error');
+                showMessage('Пожалуйста, заполните все обязательные поля правильно', 'error', 'form-message');
                 return;
             }
             
-            const formData = new FormData(this);
             const submitBtn = this.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
             
@@ -76,33 +105,68 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
             
+            // Собираем данные формы
+            const formData = new FormData(this);
+            
+            // Преобразуем FormData в объект
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Добавляем timestamp
+            data['timestamp'] = new Date().toISOString();
+            data['form_type'] = 'reservation';
+            
             try {
-                // Используем Formspree для отправки
-                const response = await fetch('https://formspree.io/f/mbdkpyal', {
+                // Отправка на ваш Formspree endpoint
+                const response = await fetch(FORMSPREEE_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: formData
+                    body: JSON.stringify(data)
                 });
                 
                 if(response.ok) {
-                    showMessage('✅ Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+                    showMessage('✅ Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success', 'form-message');
+                    
+                    // Сброс формы
                     this.reset();
                     
-                    // Сброс даты
+                    // Сброс даты и времени
                     if(dateInput) {
-                        const tomorrow = new Date();
-                        tomorrow.setDate(tomorrow.getDate() + 1);
-                        dateInput.value = tomorrow.toISOString().split('T')[0];
+                        const today = new Date();
+                        const tomorrow = new Date(today);
+                        tomorrow.setDate(today.getDate() + 1);
+                        dateInput.value = formatDate(tomorrow);
                     }
+                    if(timeInput) {
+                        timeInput.value = '19:00';
+                    }
+                    
+                    // Очистка localStorage
+                    localStorage.removeItem('reservation_form');
+                    
                 } else {
-                    throw new Error('Ошибка при отправке формы');
+                    // Пробуем получить текст ошибки
+                    let errorText = 'Ошибка при отправке формы';
+                    try {
+                        const errorData = await response.text();
+                        console.error('Formspree error:', errorData);
+                    } catch(e) {
+                        console.error('Не удалось получить текст ошибки');
+                    }
+                    
+                    throw new Error(errorText);
                 }
+                
             } catch(error) {
-                console.error('Ошибка:', error);
-                showMessage('❌ Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.', 'error');
+                console.error('Ошибка отправки:', error);
+                showMessage('❌ Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.', 'error', 'form-message');
             } finally {
+                // Разблокировка кнопки
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
@@ -114,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Валидация
             if(!validateForm(this)) {
                 return;
             }
@@ -125,15 +190,28 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
             
+            // Собираем данные формы
             const formData = new FormData(this);
             
+            // Преобразуем FormData в объект
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // Добавляем timestamp
+            data['timestamp'] = new Date().toISOString();
+            data['form_type'] = 'contact';
+            
             try {
-                const response = await fetch('https://formspree.io/f/xvojpqzl', {
+                // Отправка на ваш Formspree endpoint
+                const response = await fetch(FORMSPREEE_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: formData
+                    body: JSON.stringify(data)
                 });
                 
                 if(response.ok) {
@@ -144,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error('Ошибка при отправке');
                 }
             } catch(error) {
+                console.error('Ошибка отправки:', error);
                 alert('❌ Ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.');
             } finally {
                 submitBtn.disabled = false;
@@ -157,32 +236,24 @@ document.addEventListener('DOMContentLoaded', function() {
         let isValid = true;
         const requiredInputs = form.querySelectorAll('input[required], textarea[required]');
         
+        // Очищаем предыдущие ошибки
+        form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        form.querySelectorAll('.error-message').forEach(el => {
+            el.textContent = '';
+            el.style.display = 'none';
+        });
+        
         requiredInputs.forEach(input => {
-            const errorSpan = input.nextElementSibling;
-            
             if(!input.value.trim()) {
                 isValid = false;
-                input.classList.add('error');
-                if(errorSpan) {
-                    errorSpan.textContent = 'Это поле обязательно для заполнения';
-                    errorSpan.style.display = 'block';
-                }
+                showFieldError(input, 'Это поле обязательно для заполнения');
             } else {
-                input.classList.remove('error');
-                if(errorSpan) {
-                    errorSpan.style.display = 'none';
-                }
-                
                 // Валидация email
                 if(input.type === 'email' && input.value) {
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if(!emailRegex.test(input.value)) {
                         isValid = false;
-                        input.classList.add('error');
-                        if(errorSpan) {
-                            errorSpan.textContent = 'Введите корректный email адрес';
-                            errorSpan.style.display = 'block';
-                        }
+                        showFieldError(input, 'Введите корректный email адрес');
                     }
                 }
                 
@@ -191,11 +262,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const phoneDigits = input.value.replace(/\D/g, '');
                     if(phoneDigits.length < 10) {
                         isValid = false;
-                        input.classList.add('error');
-                        if(errorSpan) {
-                            errorSpan.textContent = 'Введите корректный номер телефона';
-                            errorSpan.style.display = 'block';
-                        }
+                        showFieldError(input, 'Введите корректный номер телефона (минимум 10 цифр)');
+                    }
+                }
+                
+                // Валидация количества гостей
+                if(input.type === 'number' && input.name === 'guests') {
+                    const guests = parseInt(input.value);
+                    if(isNaN(guests) || guests < 1 || guests > 20) {
+                        isValid = false;
+                        showFieldError(input, 'Количество гостей должно быть от 1 до 20');
                     }
                 }
             }
@@ -204,14 +280,28 @@ document.addEventListener('DOMContentLoaded', function() {
         return isValid;
     }
     
+    // Показать ошибку поля
+    function showFieldError(input, message) {
+        input.classList.add('error');
+        const errorSpan = input.nextElementSibling;
+        if(errorSpan && errorSpan.classList.contains('error-message')) {
+            errorSpan.textContent = message;
+            errorSpan.style.display = 'block';
+        }
+    }
+    
     // Показ сообщений
-    function showMessage(text, type) {
-        const messageDiv = document.getElementById('form-message');
+    function showMessage(text, type, elementId) {
+        const messageDiv = document.getElementById(elementId);
         if(messageDiv) {
             messageDiv.textContent = text;
             messageDiv.className = `form-message ${type}`;
             messageDiv.style.display = 'block';
             
+            // Прокрутка к сообщению
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Автоматическое скрытие через 5 секунд
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, 5000);
@@ -222,20 +312,144 @@ document.addEventListener('DOMContentLoaded', function() {
     const phoneInput = document.getElementById('phone');
     if(phoneInput) {
         phoneInput.addEventListener('input', function(e) {
+            // Сохраняем позицию курсора
+            const cursorPosition = this.selectionStart;
+            
+            // Удаляем все нецифры
             let value = this.value.replace(/\D/g, '');
+            
+            // Если номер начинается не с 7 или 8, добавляем 7
+            if(value.length > 0 && !/^[78]/.test(value)) {
+                value = '7' + value;
+            }
+            
+            // Форматируем номер
+            let formattedValue = '';
             if(value.length > 0) {
-                value = '+7 ' + value;
-                if(value.length > 7) {
-                    value = value.slice(0, 7) + ' ' + value.slice(7);
-                }
-                if(value.length > 12) {
-                    value = value.slice(0, 12) + '-' + value.slice(12);
-                }
-                if(value.length > 15) {
-                    value = value.slice(0, 15) + '-' + value.slice(15);
+                formattedValue = '+7 ';
+                
+                if(value.length > 1) {
+                    const part1 = value.substring(1, 4);
+                    if(part1) formattedValue += `(${part1})`;
+                    
+                    if(value.length > 4) {
+                        const part2 = value.substring(4, 7);
+                        if(part2) formattedValue += ` ${part2}`;
+                        
+                        if(value.length > 7) {
+                            const part3 = value.substring(7, 9);
+                            if(part3) formattedValue += `-${part3}`;
+                            
+                            if(value.length > 9) {
+                                const part4 = value.substring(9, 11);
+                                if(part4) formattedValue += `-${part4}`;
+                            }
+                        }
+                    }
                 }
             }
-            this.value = value;
+            
+            this.value = formattedValue;
+            
+            // Восстанавливаем позицию курсора
+            const newCursorPosition = Math.min(cursorPosition, formattedValue.length);
+            this.setSelectionRange(newCursorPosition, newCursorPosition);
         });
+        
+        // Удаляем маску при фокусе если поле пустое
+        phoneInput.addEventListener('focus', function() {
+            if(!this.value || this.value === '+7 ') {
+                this.value = '+7 ';
+            }
+        });
+    }
+    
+    // Сохранение в LocalStorage
+    function saveToLocalStorage() {
+        if(reservationForm) {
+            const formData = {};
+            const inputs = reservationForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if(input.name && input.type !== 'submit' && input.type !== 'hidden') {
+                    formData[input.name] = input.value;
+                }
+            });
+            try {
+                localStorage.setItem('reservation_form', JSON.stringify(formData));
+            } catch(e) {
+                console.error('Ошибка сохранения в localStorage:', e);
+            }
+        }
+    }
+    
+    // Загрузка из LocalStorage
+    function loadFromLocalStorage() {
+        if(reservationForm) {
+            try {
+                const savedData = localStorage.getItem('reservation_form');
+                if(savedData) {
+                    const data = JSON.parse(savedData);
+                    Object.keys(data).forEach(key => {
+                        const input = reservationForm.querySelector(`[name="${key}"]`);
+                        if(input && data[key]) {
+                            input.value = data[key];
+                        }
+                    });
+                }
+            } catch(e) {
+                console.error('Ошибка загрузки из localStorage:', e);
+                localStorage.removeItem('reservation_form');
+            }
+        }
+    }
+    
+    // Инициализация LocalStorage
+    if(reservationForm) {
+        loadFromLocalStorage();
+        
+        // Сохранение при вводе (с задержкой для производительности)
+        let saveTimeout;
+        reservationForm.addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveToLocalStorage, 500);
+        });
+        
+        // Очистка при успешной отправке
+        reservationForm.addEventListener('submit', function() {
+            localStorage.removeItem('reservation_form');
+        });
+    }
+    
+    // Обработчик для кнопок заказа в слайдере
+    document.addEventListener('click', function(e) {
+        if(e.target.classList.contains('slide-order-btn')) {
+            e.preventDefault();
+            const slideTitle = e.target.closest('.slide-info').querySelector('.slide-title').textContent;
+            
+            // Открываем попап
+            openPopup();
+            
+            // Заполняем сообщение в попапе
+            setTimeout(() => {
+                const popupMessage = document.getElementById('popup-message');
+                if(popupMessage) {
+                    popupMessage.value = `Интересует блюдо: ${slideTitle}\nПрошу связаться для уточнения деталей.`;
+                }
+                
+                // Фокусируемся на поле имени
+                const popupName = document.getElementById('popup-name');
+                if(popupName) {
+                    popupName.focus();
+                }
+            }, 300);
+        }
+    });
+    
+    // Функция для форматирования даты
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 });
