@@ -1,28 +1,24 @@
 // Меню ресторана
 const menuData = {
     starters: [
-        { name: "Брускетта с томатами", price: "450 ₽", desc: "Свежие томаты, базилик, оливковое масло на поджаренном хлебе" },
-        { name: "Карпаччо из говядины", price: "690 ₽", desc: "Тонко нарезанная говядина с пармезаном и рукколой" },
-        { name: "Тартар из тунца", price: "780 ₽", desc: "С авокадо, кунжутным соусом и васаби" },
-        { name: "Сырная тарелка", price: "850 ₽", desc: "Ассорти из лучших сыров с орехами и медом" }
+        { name: "Брускетта с томатами", price: "450 ₽", desc: "Свежие томаты, базилик, оливковое масло" },
+        { name: "Карпаччо из говядины", price: "690 ₽", desc: "Тонко нарезанная говядина с пармезаном" },
+        { name: "Тартар из тунца", price: "780 ₽", desc: "С авокадо и кунжутным соусом" }
     ],
     main: [
-        { name: "Стейк Рибай", price: "1850 ₽", desc: "350г премиальной говядины, подается с овощами гриль" },
-        { name: "Лосось на гриле", price: "1250 ₽", desc: "Филе лосося с лимонным соусом и диким рисом" },
-        { name: "Паста Карбонара", price: "890 ₽", desc: "Спагетти с панчеттой, яйцом и пармезаном" },
-        { name: "Утиная грудка", price: "1350 ₽", desc: "С ягодным соусом и картофельным гратеном" }
+        { name: "Стейк Рибай", price: "1850 ₽", desc: "350г, с овощами гриль" },
+        { name: "Лосось на гриле", price: "1250 ₽", desc: "С лимонным соусом и рисом" },
+        { name: "Паста Карбонара", price: "890 ₽", desc: "По традиционному рецепту" }
     ],
     desserts: [
-        { name: "Тирамису", price: "550 ₽", desc: "Классический итальянский десерт с кофе и маскарпоне" },
-        { name: "Чизкейк Нью-Йорк", price: "480 ₽", desc: "Нежный чизкейк с ягодным соусом" },
-        { name: "Шоколадный фондан", price: "520 ₽", desc: "Теплый шоколадный кекс с ванильным мороженым" },
-        { name: "Крем-брюле", price: "450 ₽", desc: "Ванильный крем с хрустящей карамельной корочкой" }
+        { name: "Тирамису", price: "550 ₽", desc: "Классический итальянский десерт" },
+        { name: "Чизкейк Нью-Йорк", price: "480 ₽", desc: "С ягодным соусом" },
+        { name: "Шоколадный фондан", price: "520 ₽", desc: "С ванильным мороженым" }
     ],
     drinks: [
-        { name: "Мохито", price: "450 ₽", desc: "Классический освежающий коктейль с мятой и лаймом" },
+        { name: "Мохито", price: "450 ₽", desc: "Классический освежающий коктейль" },
         { name: "Негрони", price: "580 ₽", desc: "Классика итальянского аперитива" },
-        { name: "Домашний лимонад", price: "320 ₽", desc: "С мятой, имбирем и сезонными ягодами" },
-        { name: "Вино карта", price: "от 350 ₽", desc: "Обширная карта французских и итальянских вин" }
+        { name: "Домашний лимонад", price: "320 ₽", desc: "С мятой и имбирем" }
     ]
 };
 
@@ -53,10 +49,7 @@ function displayMenu(category) {
 
 // Инициализация меню при загрузке
 document.addEventListener('DOMContentLoaded', function() {
-    // Показываем меню закусок по умолчанию
-    if (document.getElementById('menu-items')) {
-        displayMenu('starters');
-    }
+    displayMenu('starters');
     
     // Обработчики для кнопок категорий
     document.querySelectorAll('.menu-category').forEach(btn => {
@@ -69,66 +62,91 @@ document.addEventListener('DOMContentLoaded', function() {
     // Плавная прокрутка для якорей
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href === '#' || href === '') return;
+            if(this.getAttribute('href') === '#') return;
             
             e.preventDefault();
-            const targetId = href;
-            const targetElement = document.querySelector(targetId);
+            const targetId = this.getAttribute('href');
+            if(targetId === '#') return;
             
-            if (targetElement) {
-                // Закрываем мобильное меню если открыто
-                const mobileMenu = document.querySelector('.mobile-menu');
-                const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-                if (mobileMenu && mobileMenu.classList.contains('active')) {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuBtn.classList.remove('active');
-                    document.body.classList.remove('no-scroll');
-                }
-                
-                // Прокрутка к элементу
-                const headerHeight = document.querySelector('.navbar').offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
+            const targetElement = document.querySelector(targetId);
+            if(targetElement) {
                 window.scrollTo({
-                    top: targetPosition,
+                    top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
         });
     });
     
-    // Загрузка сохраненных данных формы при загрузке страницы
-    const savedData = loadFromLocalStorage('reservation_form');
-    if (savedData) {
-        Object.keys(savedData).forEach(key => {
-            const input = document.getElementById(key);
-            if (input) {
-                input.value = savedData[key];
-            }
-        });
-    }
+    // Мобильное меню
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    const mobileDropdown = document.querySelector('.dropdown-toggle');
     
-    // Сохранение данных формы при вводе
-    const form = document.getElementById('reservation-form');
-    if (form) {
-        form.addEventListener('input', function(e) {
-            const formData = {};
-            const inputs = form.querySelectorAll('input, textarea, select');
-            inputs.forEach(input => {
-                if (input.name && input.type !== 'submit' && input.type !== 'button') {
-                    formData[input.name] = input.value;
+    if(mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.classList.toggle('no-scroll');
+        });
+        
+        if(mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+        }
+        
+        // Закрытие меню при клике на ссылку
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                if(!this.classList.contains('dropdown-toggle')) {
+                    mobileMenuBtn.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
                 }
             });
-            saveToLocalStorage('reservation_form', formData);
         });
+        
+        // Мобильное выпадающее меню
+        if(mobileDropdown) {
+            mobileDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                const submenu = this.nextElementSibling;
+                submenu.classList.toggle('active');
+            });
+        }
     }
+    
+    // Десктопное выпадающее меню
+    const dropdowns = document.querySelectorAll('.menu-dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('mouseenter', function() {
+            const submenu = this.querySelector('.dropdown');
+            submenu.style.display = 'block';
+            setTimeout(() => {
+                submenu.style.opacity = '1';
+                submenu.style.transform = 'translateY(0)';
+            }, 10);
+        });
+        
+        dropdown.addEventListener('mouseleave', function() {
+            const submenu = this.querySelector('.dropdown');
+            submenu.style.opacity = '0';
+            submenu.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                submenu.style.display = 'none';
+            }, 300);
+        });
+    });
     
     // Фиксированная навигация при скролле
     const navbar = document.querySelector('.navbar');
-    if (navbar) {
+    if(navbar) {
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
+            if(window.scrollY > 100) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
@@ -136,91 +154,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
-// Мобильное меню
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const mobileDropdown = document.querySelector('.mobile-dropdown');
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            document.body.classList.toggle('no-scroll');
-        });
-        
-        // Закрытие меню при клике на ссылку
-        mobileMenu.querySelectorAll('a:not(.dropdown-toggle)').forEach(link => {
-            link.addEventListener('click', function() {
-                mobileMenuBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-            });
-        });
-        
-        // Мобильное выпадающее меню
-        if (mobileDropdown && dropdownToggle) {
-            dropdownToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                const submenu = this.nextElementSibling;
-                if (submenu) {
-                    submenu.classList.toggle('active');
-                }
-            });
-        }
-    }
-    
-    // Десктопное выпадающее меню - плавное появление
-    const dropdowns = document.querySelectorAll('.menu-dropdown');
-    dropdowns.forEach(dropdown => {
-        dropdown.addEventListener('mouseenter', function() {
-            const submenu = this.querySelector('.dropdown');
-            if (submenu) {
-                submenu.style.opacity = '0';
-                submenu.style.transform = 'translateY(-10px)';
-                submenu.style.display = 'block';
-                
-                requestAnimationFrame(() => {
-                    submenu.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    submenu.style.opacity = '1';
-                    submenu.style.transform = 'translateY(0)';
-                });
-            }
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-            const submenu = this.querySelector('.dropdown');
-            if (submenu) {
-                submenu.style.opacity = '0';
-                submenu.style.transform = 'translateY(-10px)';
-                
-                setTimeout(() => {
-                    if (!dropdown.matches(':hover')) {
-                        submenu.style.display = 'none';
-                    }
-                }, 300);
-            }
-        });
-    });
-});
-
-// Сохранение в LocalStorage
-function saveToLocalStorage(key, data) {
-    try {
-        localStorage.setItem(key, JSON.stringify(data));
-    } catch(e) {
-        console.error('Ошибка сохранения в LocalStorage:', e);
-    }
-}
-
-function loadFromLocalStorage(key) {
-    try {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : null;
-    } catch(e) {
-        console.error('Ошибка чтения из LocalStorage:', e);
-        return null;
-    }
-}
