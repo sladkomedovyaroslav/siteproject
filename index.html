@@ -39,7 +39,7 @@
                             </ul>
                         </li>
                         <li><a href="#gallery">Галерея</a></li>
-                        <li><a href="#events">События</a></li>
+                        <li><a href="#specials">Спецпредложения</a></li>
                         <li><a href="#contacts">Контакты</a></li>
                     </ul>
                     
@@ -70,7 +70,7 @@
                     </ul>
                 </li>
                 <li><a href="#gallery">Галерея</a></li>
-                <li><a href="#events">События</a></li>
+                <li><a href="#specials">Спецпредложения</a></li>
                 <li><a href="#contacts">Контакты</a></li>
                 <li><button class="contact-btn mobile-contact">Связь с нами</button></li>
             </ul>
@@ -93,6 +93,7 @@
                     <div class="about-text">
                         <p>Мы создаем неповторимую атмосферу и предлагаем блюда, которые запомнятся вам надолго.</p>
                         <p>Наша команда поваров с многолетним опытом работает только с лучшими продуктами от местных поставщиков.</p>
+                        <p>Каждое блюдо - это произведение искусства, созданное с любовью и вниманием к деталям.</p>
                     </div>
                     <div class="about-image">
                         <img src="img/restaurant-interior.jpg" alt="Интерьер ресторана">
@@ -101,26 +102,109 @@
             </div>
         </section>
 
-        <!-- Секция "Специальные предложения" (Слайдер) -->
-        <section class="section specials">
+        <!-- Секция "Специальные предложения" -->
+        <section id="specials" class="section specials">
             <div class="container">
                 <h2 class="section-title">Специальные предложения</h2>
-                <div class="slider">
-                    <div class="slide">
-                        <img src="img/dishes/dish1.jpg" alt="Блюдо дня">
-                        <h3>Блюдо дня</h3>
-                        <p>Стейк из мраморной говядины</p>
+                <div class="specials-container">
+                    <!-- Кнопка назад -->
+                    <button class="slider-btn prev-btn" aria-label="Предыдущий слайд">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Слайдер -->
+                    <div class="specials-slider">
+                        <div class="slider-wrapper">
+                            <!-- Слайд 1 -->
+                            <div class="special-slide active">
+                                <div class="slide-content">
+                                    <div class="slide-image">
+                                        <img src="img/dishes/dish1.jpg" alt="Блюдо дня">
+                                    </div>
+                                    <div class="slide-info">
+                                        <h3 class="slide-title">Блюдо дня</h3>
+                                        <p class="slide-description">Стейк из мраморной говядины с овощами гриль и трюфельным соусом. Подается с картофельным пюре и сезонными овощами.</p>
+                                        <div class="slide-price">
+                                            <span class="old-price">1850 ₽</span>
+                                            <span class="new-price">1550 ₽</span>
+                                        </div>
+                                        <button class="slide-order-btn">Заказать</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Слайд 2 -->
+                            <div class="special-slide">
+                                <div class="slide-content">
+                                    <div class="slide-image">
+                                        <img src="img/dishes/dish2.jpg" alt="Шеф-меню">
+                                    </div>
+                                    <div class="slide-info">
+                                        <h3 class="slide-title">Шеф-меню</h3>
+                                        <p class="slide-description">Утиная грудка с ягодным соусом, запеченным картофелем и зеленью. Идеальное сочетание вкусов для настоящих гурманов.</p>
+                                        <div class="slide-price">
+                                            <span class="old-price">1250 ₽</span>
+                                            <span class="new-price">990 ₽</span>
+                                        </div>
+                                        <button class="slide-order-btn">Заказать</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Слайд 3 -->
+                            <div class="special-slide">
+                                <div class="slide-content">
+                                    <div class="slide-image">
+                                        <img src="img/dishes/dish3.jpg" alt="Десерт недели">
+                                    </div>
+                                    <div class="slide-info">
+                                        <h3 class="slide-title">Десерт недели</h3>
+                                        <p class="slide-description">Тирамису по-итальянски с домашним печеньем савоярди и маскарпоне. Легкий кофейный вкус и нежная текстура.</p>
+                                        <div class="slide-price">
+                                            <span class="old-price">550 ₽</span>
+                                            <span class="new-price">450 ₽</span>
+                                        </div>
+                                        <button class="slide-order-btn">Заказать</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Слайд 4 -->
+                            <div class="special-slide">
+                                <div class="slide-content">
+                                    <div class="slide-image">
+                                        <img src="img/dishes/dish4.jpg" alt="Паста дня">
+                                    </div>
+                                    <div class="slide-info">
+                                        <h3 class="slide-title">Паста дня</h3>
+                                        <p class="slide-description">Спагетти карбонара с панчеттой, пармезаном и домашним соусом. Классика итальянской кухни в нашем исполнении.</p>
+                                        <div class="slide-price">
+                                            <span class="old-price">890 ₽</span>
+                                            <span class="new-price">750 ₽</span>
+                                        </div>
+                                        <button class="slide-order-btn">Заказать</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Индикаторы слайдов -->
+                        <div class="slider-indicators">
+                            <button class="indicator active" data-slide="0"></button>
+                            <button class="indicator" data-slide="1"></button>
+                            <button class="indicator" data-slide="2"></button>
+                            <button class="indicator" data-slide="3"></button>
+                        </div>
                     </div>
-                    <div class="slide">
-                        <img src="img/dishes/dish2.jpg" alt="Шеф-меню">
-                        <h3>Шеф-меню</h3>
-                        <p>Утиная грудка с ягодным соусом</p>
-                    </div>
-                    <div class="slide">
-                        <img src="img/dishes/dish3.jpg" alt="Десерт недели">
-                        <h3>Десерт недели</h3>
-                        <p>Тирамису по-итальянски</p>
-                    </div>
+                    
+                    <!-- Кнопка вперед -->
+                    <button class="slider-btn next-btn" aria-label="Следующий слайд">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </section>
@@ -175,7 +259,7 @@
     </main>
 
     <!-- Футер -->
-    <footer class="footer">
+    <footer id="contacts" class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
@@ -200,7 +284,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Ресторан "Гастроном". Все права защищены.</p>
+                <p>&copy; 2024 Ресторан "Гастроном". Все права защищены.</p>
             </div>
         </div>
     </footer>
@@ -229,6 +313,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="js/menu.js"></script>
+    <script src="js/slider.js"></script>
     <script src="js/form.js"></script>
     <script src="js/main.js"></script>
 </body>
