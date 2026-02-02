@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobile.css" media="screen and (max-width: 768px)">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 </head>
 <body>
     <!-- Шапка с видео -->
     <header class="header">
-        <video autoplay muted loop playsinline class="header-video">
-            <source src="assets/video.mp4" type="video/mp4">
-            Ваш браузер не поддерживает видео.
-        </video>
+        <div class="video-container">
+            <video autoplay muted loop playsinline class="header-video">
+                <source src="assets/video.mp4" type="video/mp4">
+                Ваш браузер не поддерживает видео.
+            </video>
+        </div>
         <div class="header-overlay"></div>
         
         <nav class="navbar">
@@ -58,10 +58,13 @@
         
         <!-- Мобильное меню (скрытое) -->
         <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <button class="mobile-menu-close">&times;</button>
+            </div>
             <ul class="mobile-nav">
                 <li><a href="#about">О нас</a></li>
                 <li class="mobile-dropdown">
-                    <a href="#menu">Меню ▾</a>
+                    <a href="#menu" class="dropdown-toggle">Меню ▾</a>
                     <ul class="mobile-submenu">
                         <li><a href="#starters">Закуски</a></li>
                         <li><a href="#main">Основные блюда</a></li>
@@ -118,7 +121,7 @@
                     <div class="specials-slider">
                         <div class="slider-wrapper">
                             <!-- Слайд 1 -->
-                            <div class="special-slide active">
+                            <div class="special-slide">
                                 <div class="slide-content">
                                     <div class="slide-image">
                                         <img src="img/dishes/dish1.jpg" alt="Блюдо дня">
@@ -130,7 +133,7 @@
                                             <span class="old-price">1850 ₽</span>
                                             <span class="new-price">1550 ₽</span>
                                         </div>
-                                        <button class="slide-order-btn">Заказать</button>
+                                        <button class="slide-order-btn">Заказать сейчас</button>
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +151,7 @@
                                             <span class="old-price">1250 ₽</span>
                                             <span class="new-price">990 ₽</span>
                                         </div>
-                                        <button class="slide-order-btn">Заказать</button>
+                                        <button class="slide-order-btn">Заказать сейчас</button>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +169,7 @@
                                             <span class="old-price">550 ₽</span>
                                             <span class="new-price">450 ₽</span>
                                         </div>
-                                        <button class="slide-order-btn">Заказать</button>
+                                        <button class="slide-order-btn">Заказать сейчас</button>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +187,7 @@
                                             <span class="old-price">890 ₽</span>
                                             <span class="new-price">750 ₽</span>
                                         </div>
-                                        <button class="slide-order-btn">Заказать</button>
+                                        <button class="slide-order-btn">Заказать сейчас</button>
                                     </div>
                                 </div>
                             </div>
@@ -277,9 +280,9 @@
                 <div class="footer-social">
                     <h3>Мы в соцсетях</h3>
                     <div class="social-links">
-                        <a href="#" aria-label="Instagram">IG</a>
-                        <a href="#" aria-label="Facebook">FB</a>
-                        <a href="#" aria-label="Telegram">TG</a>
+                        <a href="#" aria-label="Instagram">Instagram</a>
+                        <a href="#" aria-label="Facebook">Facebook</a>
+                        <a href="#" aria-label="Telegram">Telegram</a>
                     </div>
                 </div>
             </div>
@@ -310,8 +313,6 @@
     </div>
 
     <!-- Скрипты -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/slider.js"></script>
     <script src="js/form.js"></script>
