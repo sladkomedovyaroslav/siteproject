@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="slide-info">
                                         <h3 class="slide-title">Блюдо дня</h3>
-                                        <p class="slide-description">Стейк из мраморной говядины с овощами гриль и трюфельным соусом. Подается с картофельным пюре и сезонными овощами.</p>
+                                        <p class="slide-description">Стейк из мраморной говядины с овощами гриль и трюфельным соусом.</p>
                                         <div class="slide-price">
                                             <span class="old-price">1850 ₽</span>
                                             <span class="new-price">1550 ₽</span>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="slide-info">
                                         <h3 class="slide-title">Шеф-меню</h3>
-                                        <p class="slide-description">Утиная грудка с ягодным соусом, запеченным картофелем и зеленью. Идеальное сочетание вкусов для настоящих гурманов.</p>
+                                        <p class="slide-description">Утиная грудка с ягодным соусом, запеченным картофелем и зеленью.</p>
                                         <div class="slide-price">
                                             <span class="old-price">1250 ₽</span>
                                             <span class="new-price">990 ₽</span>
@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="slide-info">
                                         <h3 class="slide-title">Десерт недели</h3>
-                                        <p class="slide-description">Тирамису по-итальянски с домашним печеньем савоярди и маскарпоне. Легкий кофейный вкус и нежная текстура.</p>
+                                        <p class="slide-description">Тирамису по-итальянски с домашним печеньем савоярди и маскарпоне.</p>
                                         <div class="slide-price">
                                             <span class="old-price">550 ₽</span>
                                             <span class="new-price">450 ₽</span>
@@ -182,7 +182,7 @@
                                     </div>
                                     <div class="slide-info">
                                         <h3 class="slide-title">Паста дня</h3>
-                                        <p class="slide-description">Спагетти карбонара с панчеттой, пармезаном и домашним соусом. Классика итальянской кухни в нашем исполнении.</p>
+                                        <p class="slide-description">Спагетти карбонара с панчеттой, пармезаном и домашним соусом.</p>
                                         <div class="slide-price">
                                             <span class="old-price">890 ₽</span>
                                             <span class="new-price">750 ₽</span>
@@ -235,24 +235,31 @@
                 <form id="reservation-form" class="reservation-form">
                     <div class="form-group">
                         <input type="text" id="name" name="name" required placeholder="Ваше имя *">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
                         <input type="tel" id="phone" name="phone" required placeholder="Телефон *">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
                         <input type="email" id="email" name="email" placeholder="Email">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
                         <input type="date" id="date" name="date" required>
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
                         <input type="time" id="time" name="time" required>
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group">
                         <input type="number" id="guests" name="guests" min="1" max="20" required placeholder="Количество гостей *">
+                        <span class="error-message"></span>
                     </div>
                     <div class="form-group full-width">
                         <textarea id="message" name="message" placeholder="Дополнительные пожелания"></textarea>
+                        <span class="error-message"></span>
                     </div>
                     <button type="submit" class="btn-submit">Отправить заявку</button>
                     <div class="form-message" id="form-message"></div>
@@ -300,12 +307,15 @@
             <form id="contact-form">
                 <div class="form-group">
                     <input type="text" id="popup-name" name="name" required placeholder="Имя *">
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <input type="email" id="popup-email" name="email" required placeholder="Email *">
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <textarea id="popup-message" name="message" required placeholder="Сообщение *"></textarea>
+                    <span class="error-message"></span>
                 </div>
                 <button type="submit" class="btn-submit" id="popup-submit">Отправить</button>
             </form>
@@ -313,9 +323,8 @@
     </div>
 
     <!-- Скрипты -->
-    <script src="js/menu.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/slider.js"></script>
     <script src="js/form.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>
