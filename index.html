@@ -40,6 +40,7 @@
                         </li>
                         <li><a href="#gallery">Галерея</a></li>
                         <li><a href="#specials">Спецпредложения</a></li>
+                        <li><a href="#calculator">Калькулятор</a></li>
                         <li><a href="#contacts">Контакты</a></li>
                     </ul>
                     
@@ -74,6 +75,7 @@
                 </li>
                 <li><a href="#gallery">Галерея</a></li>
                 <li><a href="#specials">Спецпредложения</a></li>
+                <li><a href="#calculator">Калькулятор</a></li>
                 <li><a href="#contacts">Контакты</a></li>
                 <li><button class="contact-btn mobile-contact">Связь с нами</button></li>
             </ul>
@@ -212,6 +214,185 @@
             </div>
         </section>
 
+        <!-- Секция "Калькулятор заказа" -->
+        <section id="calculator" class="section calculator">
+            <div class="container">
+                <h2 class="section-title">Рассчитайте стоимость вашего заказа</h2>
+                <div class="calculator-content">
+                    <div class="calculator-form">
+                        <div class="calculator-categories">
+                            <div class="category" data-category="starters">
+                                <h3>Закуски</h3>
+                                <div class="category-items">
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="450" data-name="Брускетта с томатами">
+                                            <span class="item-name">Брускетта с томатами</span>
+                                            <span class="item-price">450 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="690" data-name="Карпаччо из говядины">
+                                            <span class="item-name">Карпаччо из говядины</span>
+                                            <span class="item-price">690 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="780" data-name="Тартар из тунца">
+                                            <span class="item-name">Тартар из тунца</span>
+                                            <span class="item-price">780 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="550" data-name="Сырная тарелка">
+                                            <span class="item-name">Сырная тарелка</span>
+                                            <span class="item-price">550 ₽</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="category" data-category="main">
+                                <h3>Основные блюда</h3>
+                                <div class="category-items">
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="1850" data-name="Стейк Рибай">
+                                            <span class="item-name">Стейк Рибай</span>
+                                            <span class="item-price">1850 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="1250" data-name="Лосось на гриле">
+                                            <span class="item-name">Лосось на гриле</span>
+                                            <span class="item-price">1250 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="890" data-name="Паста Карбонара">
+                                            <span class="item-name">Паста Карбонара</span>
+                                            <span class="item-price">890 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="1350" data-name="Утиная грудка">
+                                            <span class="item-name">Утиная грудка</span>
+                                            <span class="item-price">1350 ₽</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="category" data-category="desserts">
+                                <h3>Десерты</h3>
+                                <div class="category-items">
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="550" data-name="Тирамису">
+                                            <span class="item-name">Тирамису</span>
+                                            <span class="item-price">550 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="480" data-name="Чизкейк Нью-Йорк">
+                                            <span class="item-name">Чизкейк Нью-Йорк</span>
+                                            <span class="item-price">480 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="520" data-name="Шоколадный фондан">
+                                            <span class="item-name">Шоколадный фондан</span>
+                                            <span class="item-price">520 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="450" data-name="Крем-брюле">
+                                            <span class="item-name">Крем-брюле</span>
+                                            <span class="item-price">450 ₽</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="category" data-category="drinks">
+                                <h3>Напитки</h3>
+                                <div class="category-items">
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="450" data-name="Мохито">
+                                            <span class="item-name">Мохито</span>
+                                            <span class="item-price">450 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="580" data-name="Негрони">
+                                            <span class="item-name">Негрони</span>
+                                            <span class="item-price">580 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="320" data-name="Домашний лимонад">
+                                            <span class="item-name">Домашний лимонад</span>
+                                            <span class="item-price">320 ₽</span>
+                                        </label>
+                                    </div>
+                                    <div class="calculator-item">
+                                        <label>
+                                            <input type="checkbox" name="item" value="350" data-name="Бокал вина">
+                                            <span class="item-name">Бокал вина</span>
+                                            <span class="item-price">350 ₽</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calculator-summary">
+                            <div class="summary-content">
+                                <h3>Ваш заказ</h3>
+                                <div class="order-list" id="order-list">
+                                    <!-- Здесь будут отображаться выбранные позиции -->
+                                    <p class="empty-message">Выберите блюда из меню</p>
+                                </div>
+                                <div class="order-total">
+                                    <div class="total-row">
+                                        <span>Итого:</span>
+                                        <span class="total-price" id="total-price">0 ₽</span>
+                                    </div>
+                                    <div class="total-row discount-row">
+                                        <span>Скидка 10% (при заказе от 3000 ₽):</span>
+                                        <span class="discount-amount" id="discount-amount">0 ₽</span>
+                                    </div>
+                                    <div class="total-row final-row">
+                                        <span>К оплате:</span>
+                                        <span class="final-price" id="final-price">0 ₽</span>
+                                    </div>
+                                </div>
+                                <button class="btn-order" id="btn-order">Заказать выбранное</button>
+                                <button class="btn-clear" id="btn-clear">Очистить заказ</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calculator-note">
+                        <p>💡 <strong>Примечание:</strong> Стоимость обновляется автоматически при выборе блюд. 
+                        При заказе от 3000 ₽ предоставляется скидка 10%.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Секция "Меню" -->
         <section id="menu" class="section menu">
             <div class="container">
@@ -335,6 +516,7 @@
     <!-- Скрипты -->
     <script src="js/main.js"></script>
     <script src="js/slider.js"></script>
+    <script src="js/calculator.js"></script>
     <script src="js/form.js"></script>
 </body>
 </html>
