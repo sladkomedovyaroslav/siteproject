@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Закрытие попапа
-    if (popupClose) {
+    if(popupClose) {
         popupClose.addEventListener('click', closePopup);
     }
     
-    if (popupOverlay) {
+    if(popupOverlay) {
         popupOverlay.addEventListener('click', function(e) {
-            if (e.target === this) {
+            if(e.target === this) {
                 closePopup();
             }
         });
@@ -31,75 +31,39 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Закрытие по ESC
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && popupOverlay.style.display === 'flex') {
+        if(e.key === 'Escape' && popupOverlay.style.display === 'flex') {
             closePopup();
         }
     });
     
-    // Анимация открытия попапа с RequestAnimationFrame
+    // Анимация открытия попапа
     function openPopup() {
         popupOverlay.style.display = 'flex';
-        popupOverlay.style.opacity = '0';
-        
-        let opacity = 0;
-        
-        function animate() {
-            opacity += 0.05;
-            popupOverlay.style.opacity = opacity;
-            
-            if (opacity < 1) {
-                requestAnimationFrame(animate);
-            }
-        }
-        
-        requestAnimationFrame(animate);
+        setTimeout(() => {
+            popupOverlay.style.opacity = '1';
+        }, 10);
     }
     
     function closePopup() {
-        let opacity = 1;
-        
-        function animate() {
-            opacity -= 0.05;
-            popupOverlay.style.opacity = opacity;
-            
-            if (opacity > 0) {
-                requestAnimationFrame(animate);
-            } else {
-                popupOverlay.style.display = 'none';
-                // Сбрасываем форму
-                if (contactForm) {
-                    contactForm.reset();
-                }
-            }
-        }
-        
-        requestAnimationFrame(animate);
+        popupOverlay.style.opacity = '0';
+        setTimeout(() => {
+            popupOverlay.style.display = 'none';
+        }, 300);
     }
     
     // Отправка формы бронирования
-    if (reservationForm) {
-        // Устанавливаем минимальную дату как сегодня
+    if(reservationForm) {
+        // Устанавливаем минимальную дату
         const dateInput = document.getElementById('date');
-        if (dateInput) {
+        if(dateInput) {
             const today = new Date().toISOString().split('T')[0];
             dateInput.min = today;
-            
-            // Устанавливаем значение по умолчанию (завтра)
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            dateInput.value = tomorrow.toISOString().split('T')[0];
-        }
-        
-        // Устанавливаем время по умолчанию
-        const timeInput = document.getElementById('time');
-        if (timeInput) {
-            timeInput.value = '19:00';
         }
         
         reservationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!validateForm(this)) {
+            if(!validateForm(this)) {
                 showMessage('Пожалуйста, заполните все обязательные поля правильно', 'error');
                 return;
             }
@@ -108,63 +72,49 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = this.querySelector('.btn-submit');
             const originalText = submitBtn.textContent;
             
-            // Блокировка кнопки и отображение загрузки
+            // Блокировка кнопки
             submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Отправка...';
             
             try {
-                // Здесь нужно указать ваш URL для отправки формы
-                const response = await fetch('https://formspree.io/f/mvgnvgae', {
+                // Используем Formspree для отправки
+                const response = await fetch('https://formspree.io/f/xvojpqzl', {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Accept': 'application/json'
                     },
-                    body: JSON.stringify(Object.fromEntries(formData))
+                    body: formData
                 });
                 
-                if (response.ok) {
+                if(response.ok) {
                     showMessage('✅ Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
                     this.reset();
                     
-                    // Сбрасываем дату и время к значениям по умолчанию
-                    if (dateInput) {
+                    // Сброс даты
+                    if(dateInput) {
                         const tomorrow = new Date();
                         tomorrow.setDate(tomorrow.getDate() + 1);
                         dateInput.value = tomorrow.toISOString().split('T')[0];
                     }
-                    if (timeInput) {
-                        timeInput.value = '19:00';
-                    }
-                    
-                    localStorage.removeItem('reservation_form');
-                    
-                    // Прокрутка к сообщению об успехе
-                    const messageDiv = document.getElementById('form-message');
-                    if (messageDiv) {
-                        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
                 } else {
                     throw new Error('Ошибка при отправке формы');
                 }
-            } catch (error) {
+            } catch(error) {
                 console.error('Ошибка:', error);
                 showMessage('❌ Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.', 'error');
             } finally {
-                // Разблокировка кнопки
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
                 submitBtn.textContent = originalText;
             }
         });
     }
     
     // Отправка контактной формы
-    if (contactForm) {
+    if(contactForm) {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!validateForm(this)) {
+            if(!validateForm(this)) {
                 return;
             }
             
@@ -173,50 +123,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Блокировка кнопки
             submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Отправка...';
             
             const formData = new FormData(this);
             
             try {
-                const response = await fetch('https://formspree.io/f/mvgnvgae', {
+                const response = await fetch('https://formspree.io/f/xvojpqzl', {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Accept': 'application/json'
                     },
-                    body: JSON.stringify(Object.fromEntries(formData))
+                    body: formData
                 });
                 
-                if (response.ok) {
+                if(response.ok) {
                     alert('✅ Сообщение отправлено! Мы ответим вам в ближайшее время.');
                     this.reset();
                     closePopup();
                 } else {
                     throw new Error('Ошибка при отправке');
                 }
-            } catch (error) {
+            } catch(error) {
                 alert('❌ Ошибка при отправке сообщения. Пожалуйста, попробуйте еще раз.');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
                 submitBtn.textContent = originalText;
             }
         });
-    }
-    
-    // Показ сообщений
-    function showMessage(text, type) {
-        const messageDiv = document.getElementById('form-message');
-        if (messageDiv) {
-            messageDiv.textContent = text;
-            messageDiv.className = `form-message ${type}`;
-            messageDiv.style.display = 'block';
-            
-            // Автоматическое скрытие через 5 секунд
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
-        }
     }
     
     // Валидация формы
@@ -227,41 +160,41 @@ document.addEventListener('DOMContentLoaded', function() {
         requiredInputs.forEach(input => {
             const errorSpan = input.nextElementSibling;
             
-            if (!input.value.trim()) {
+            if(!input.value.trim()) {
                 isValid = false;
                 input.classList.add('error');
-                if (errorSpan && errorSpan.classList.contains('error-message')) {
+                if(errorSpan) {
                     errorSpan.textContent = 'Это поле обязательно для заполнения';
-                    errorSpan.classList.add('show');
+                    errorSpan.style.display = 'block';
                 }
             } else {
                 input.classList.remove('error');
-                if (errorSpan && errorSpan.classList.contains('error-message')) {
-                    errorSpan.classList.remove('show');
+                if(errorSpan) {
+                    errorSpan.style.display = 'none';
                 }
                 
                 // Валидация email
-                if (input.type === 'email' && input.value) {
+                if(input.type === 'email' && input.value) {
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(input.value)) {
+                    if(!emailRegex.test(input.value)) {
                         isValid = false;
                         input.classList.add('error');
-                        if (errorSpan) {
+                        if(errorSpan) {
                             errorSpan.textContent = 'Введите корректный email адрес';
-                            errorSpan.classList.add('show');
+                            errorSpan.style.display = 'block';
                         }
                     }
                 }
                 
                 // Валидация телефона
-                if (input.type === 'tel' && input.value) {
-                    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-                    if (!phoneRegex.test(input.value) || input.value.replace(/\D/g, '').length < 10) {
+                if(input.type === 'tel' && input.value) {
+                    const phoneDigits = input.value.replace(/\D/g, '');
+                    if(phoneDigits.length < 10) {
                         isValid = false;
                         input.classList.add('error');
-                        if (errorSpan) {
+                        if(errorSpan) {
                             errorSpan.textContent = 'Введите корректный номер телефона';
-                            errorSpan.classList.add('show');
+                            errorSpan.style.display = 'block';
                         }
                     }
                 }
@@ -271,29 +204,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return isValid;
     }
     
+    // Показ сообщений
+    function showMessage(text, type) {
+        const messageDiv = document.getElementById('form-message');
+        if(messageDiv) {
+            messageDiv.textContent = text;
+            messageDiv.className = `form-message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+    
     // Валидация телефона с маской
     const phoneInput = document.getElementById('phone');
-    if (phoneInput) {
+    if(phoneInput) {
         phoneInput.addEventListener('input', function(e) {
             let value = this.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                if (value.length === 1 && value !== '7') {
-                    value = '7' + value;
+            if(value.length > 0) {
+                value = '+7 ' + value;
+                if(value.length > 7) {
+                    value = value.slice(0, 7) + ' ' + value.slice(7);
                 }
-                if (value.length > 1) {
-                    value = '+7 (' + value.substring(1);
-                    if (value.length > 7) {
-                        value = value.substring(0, 7) + ') ' + value.substring(7);
-                    }
-                    if (value.length > 12) {
-                        value = value.substring(0, 12) + '-' + value.substring(12);
-                    }
-                    if (value.length > 15) {
-                        value = value.substring(0, 15) + '-' + value.substring(15);
-                    }
-                    if (value.length > 18) {
-                        value = value.substring(0, 18);
-                    }
+                if(value.length > 12) {
+                    value = value.slice(0, 12) + '-' + value.slice(12);
+                }
+                if(value.length > 15) {
+                    value = value.slice(0, 15) + '-' + value.slice(15);
                 }
             }
             this.value = value;
