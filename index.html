@@ -233,6 +233,11 @@
             <div class="container">
                 <h2 class="section-title">Забронировать стол</h2>
                 <form id="reservation-form" class="reservation-form">
+                    <!-- Скрытые поля для Formspree -->
+                    <input type="hidden" name="_subject" value="Новая бронь стола от ресторана Гастроном">
+                    <input type="hidden" name="_replyto" value="email">
+                    <input type="hidden" name="_language" value="ru">
+                    
                     <div class="form-group">
                         <input type="text" id="name" name="name" required placeholder="Ваше имя *">
                         <span class="error-message"></span>
@@ -305,6 +310,11 @@
             <button class="popup-close" id="popup-close">&times;</button>
             <h2>Свяжитесь с нами</h2>
             <form id="contact-form">
+                <!-- Скрытые поля для Formspree -->
+                <input type="hidden" name="_subject" value="Сообщение с сайта ресторана Гастроном">
+                <input type="hidden" name="_replyto" value="popup-email">
+                <input type="hidden" name="_language" value="ru">
+                
                 <div class="form-group">
                     <input type="text" id="popup-name" name="name" required placeholder="Имя *">
                     <span class="error-message"></span>
