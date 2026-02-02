@@ -1,239 +1,159 @@
 // Кастомный слайдер для специальных предложений
-class SpecialsSlider {
-    constructor() {
-        this.slider = document.querySelector('.specials-slider');
-        this.slides = document.querySelectorAll('.special-slide');
-        this.wrapper = document.querySelector('.slider-wrapper');
-        this.indicators = document.querySelectorAll('.indicator');
-        this.prevBtn = document.querySelector('.prev-btn');
-        this.nextBtn = document.querySelector('.next-btn');
-        
-        if (!this.slider || !this.slides.length) return;
-        
-        this.currentSlide = 0;
-        this.totalSlides = this.slides.length;
-        this.isAnimating = false;
-        this.autoSlideInterval = null;
-        this.autoSlideDelay = 5000;
-        this.touchStartX = 0;
-        this.touchEndX = 0;
-        this.swipeThreshold = 50;
-        
-        this.init();
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.querySelector('.specials-slider');
+    if (!slider) return;
+    
+    const wrapper = slider.querySelector('.slider-wrapper');
+    const slides = slider.querySelectorAll('.special-slide');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const indicators = slider.querySelectorAll('.indicator');
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    let isAnimating = false;
+    let autoSlideInterval;
+    
+    // Устанавливаем начальные размеры
+    function setupSlider() {
+        wrapper.style.width = `${totalSlides * 100}%`;
+        slides.forEach(slide => {
+            slide.style.width = `${100 / totalSlides}%`;
+        });
+        updateSliderPosition();
     }
     
-    init() {
-        this.setupSlider();
-        this.setupEventListeners();
-        this.updateSlider();
-        this.startAutoSlide();
-        
-        window.addEventListener('resize', () => {
-            this.updateSlider();
-        });
+    // Обновляем позицию слайдера
+    function updateSliderPosition() {
+        wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+        updateIndicators();
     }
     
-    setupSlider() {
-        // Устанавливаем ширину слайдера
-        this.sliderWidth = this.slider.offsetWidth;
-        this.wrapper.style.width = `${this.totalSlides * 100}%`;
-        
-        // Устанавливаем ширину каждого слайда
-        this.slides.forEach(slide => {
-            slide.style.width = `${100 / this.totalSlides}%`;
-        });
-        
-        // Показываем первый слайд
-        this.showSlide(0);
-    }
-    
-    setupEventListeners() {
-        // Кнопки навигации
-        if (this.prevBtn) {
-            this.prevBtn.addEventListener('click', () => this.prevSlide());
-        }
-        
-        if (this.nextBtn) {
-            this.nextBtn.addEventListener('click', () => this.nextSlide());
-        }
-        
-        // Индикаторы
-        this.indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => this.goToSlide(index));
-        });
-        
-        // Свайпы на мобильных
-        this.slider.addEventListener('touchstart', (e) => {
-            this.touchStartX = e.changedTouches[0].screenX;
-            this.stopAutoSlide();
-        });
-        
-        this.slider.addEventListener('touchend', (e) => {
-            this.touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe();
-            this.startAutoSlide();
-        });
-        
-        // Клавиатура
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                this.prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                this.nextSlide();
-            }
-        });
-        
-        // Пауза автопрокрутки при наведении
-        this.slider.addEventListener('mouseenter', () => this.stopAutoSlide());
-        this.slider.addEventListener('mouseleave', () => this.startAutoSlide());
-        
-        // Кнопки заказа
-        document.querySelectorAll('.slide-order-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const slideTitle = btn.closest('.slide-info').querySelector('.slide-title').textContent;
-                this.openContactForm(slideTitle);
-            });
+    // Обновляем индикаторы
+    function updateIndicators() {
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentSlide);
         });
     }
     
-    updateSlider() {
-        this.sliderWidth = this.slider.offsetWidth;
-        this.wrapper.style.width = `${this.totalSlides * 100}%`;
-        this.slides.forEach(slide => {
-            slide.style.width = `${100 / this.totalSlides}%`;
-        });
-        this.goToSlide(this.currentSlide, false);
-    }
-    
-    showSlide(index, animate = true) {
-        if (this.isAnimating || index < 0 || index >= this.totalSlides) return;
+    // Переход к слайду
+    function goToSlide(index, animate = true) {
+        if (isAnimating || index < 0 || index >= totalSlides || index === currentSlide) return;
         
-        this.isAnimating = true;
-        
-        // Обновляем индикаторы
-        this.indicators.forEach(indicator => indicator.classList.remove('active'));
-        if (this.indicators[index]) {
-            this.indicators[index].classList.add('active');
-        }
-        
-        // Анимируем переход
-        const translateX = -index * 100;
+        isAnimating = true;
         if (animate) {
-            this.wrapper.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            wrapper.style.transition = 'transform 0.5s ease';
         } else {
-            this.wrapper.style.transition = 'none';
+            wrapper.style.transition = 'none';
         }
-        this.wrapper.style.transform = `translateX(${translateX}%)`;
         
-        this.currentSlide = index;
+        currentSlide = index;
+        updateSliderPosition();
         
-        // Сбрасываем флаг анимации после завершения
+        // Сбрасываем анимацию
         if (animate) {
             setTimeout(() => {
-                this.isAnimating = false;
+                isAnimating = false;
+                wrapper.style.transition = '';
             }, 500);
         } else {
-            this.isAnimating = false;
+            isAnimating = false;
         }
     }
     
-    nextSlide() {
-        if (this.isAnimating) return;
-        
-        const nextIndex = (this.currentSlide + 1) % this.totalSlides;
-        this.showSlide(nextIndex);
+    // Следующий слайд
+    function nextSlide() {
+        const nextIndex = (currentSlide + 1) % totalSlides;
+        goToSlide(nextIndex);
     }
     
-    prevSlide() {
-        if (this.isAnimating) return;
-        
-        const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
-        this.showSlide(prevIndex);
+    // Предыдущий слайд
+    function prevSlide() {
+        const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+        goToSlide(prevIndex);
     }
     
-    goToSlide(index, animate = true) {
-        if (this.isAnimating || index === this.currentSlide) return;
-        this.showSlide(index, animate);
+    // Автопрокрутка
+    function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideInterval = setInterval(nextSlide, 5000);
     }
     
-    handleSwipe() {
-        const swipeDistance = this.touchStartX - this.touchEndX;
-        
-        if (Math.abs(swipeDistance) < this.swipeThreshold) return;
-        
-        if (swipeDistance > 0) {
-            this.nextSlide();
-        } else {
-            this.prevSlide();
+    function stopAutoSlide() {
+        if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
         }
     }
     
-    startAutoSlide() {
-        this.stopAutoSlide();
-        this.autoSlideInterval = setInterval(() => {
-            this.nextSlide();
-        }, this.autoSlideDelay);
-    }
+    // Инициализация
+    setupSlider();
     
-    stopAutoSlide() {
-        if (this.autoSlideInterval) {
-            clearInterval(this.autoSlideInterval);
-            this.autoSlideInterval = null;
-        }
-    }
-    
-    openContactForm(dishName) {
-        const popupOverlay = document.getElementById('popup-overlay');
-        const popup = popupOverlay.querySelector('.popup');
-        const messageField = document.getElementById('popup-message');
-        
-        if (popupOverlay && messageField) {
-            // Заполняем сообщение
-            messageField.value = `Интересует блюдо: ${dishName}. Прошу связаться для уточнения деталей.`;
-            
-            // Открываем попап с анимацией
-            popupOverlay.style.display = 'flex';
-            popupOverlay.style.opacity = '0';
-            
-            let opacity = 0;
-            
-            function animate() {
-                opacity += 0.05;
-                popupOverlay.style.opacity = opacity;
-                
-                if (opacity < 1) {
-                    requestAnimationFrame(animate);
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        } else {
-            alert(`Вы выбрали: ${dishName}\nНаш менеджер свяжется с вами для подтверждения заказа.`);
-        }
-    }
-}
-
-// Инициализация слайдера при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация слайдера специальных предложений
-    if (document.querySelector('.specials-slider')) {
-        new SpecialsSlider();
-    }
-    
-    // Обработчик для кнопки "Назад" в мобильном меню
-    const mobileMenuClose = document.querySelector('.mobile-menu-close');
-    if (mobileMenuClose) {
-        mobileMenuClose.addEventListener('click', function() {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            if (mobileMenu) {
-                mobileMenu.classList.remove('active');
-            }
-            if (mobileMenuBtn) {
-                mobileMenuBtn.classList.remove('active');
-            }
-            document.body.classList.remove('no-scroll');
+    // Обработчики событий
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            prevSlide();
+            startAutoSlide();
         });
     }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            nextSlide();
+            startAutoSlide();
+        });
+    }
+    
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            stopAutoSlide();
+            goToSlide(index);
+            startAutoSlide();
+        });
+    });
+    
+    // Свайп на мобильных
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoSlide();
+    });
+    
+    slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        startAutoSlide();
+    });
+    
+    function handleSwipe() {
+        const swipeDistance = touchStartX - touchEndX;
+        const threshold = 50;
+        
+        if (Math.abs(swipeDistance) < threshold) return;
+        
+        if (swipeDistance > 0) {
+            nextSlide();
+        } else {
+            prevSlide();
+        }
+    }
+    
+    // Запускаем автопрокрутку
+    startAutoSlide();
+    
+    // Останавливаем автопрокрутку при наведении
+    slider.addEventListener('mouseenter', stopAutoSlide);
+    slider.addEventListener('mouseleave', startAutoSlide);
+    
+    // Обработчик для кнопок заказа
+    document.querySelectorAll('.slide-order-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const slideTitle = this.closest('.slide-info').querySelector('.slide-title').textContent;
+            alert(`Вы выбрали: ${slideTitle}\nНаш менеджер свяжется с вами для подтверждения заказа.`);
+        });
+    });
 });
